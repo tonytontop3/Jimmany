@@ -1,69 +1,81 @@
-# MV-OS Harness (Full Bundle)
+# Operational Self — Governance / Conscience Kernel (Lux | Vigil)
 
-This bundle includes:
-- Full 10-scenario MV test suite (S1–S10) in `scenarios/`
-- JSON Schemas:
-  - `schema/scenario.schema.json`
-  - `schema/whylog.schema.json`
-- Reference harness implementation:
-  - `src/harness.py` (includes an OpenAI-compatible runtime)
-  - `src/run_suite.py`
-- `REPORT_TEMPLATE.md`
-- DM/DCL Canon Wiring Pack (schema + reference reducer) in `canon/`
+Operational Self is a **deterministic governance kernel** for agents: a small set of schemas, precedence rules, and a reference reducer that turns ethical commitments into **replayable, auditable decisions**.
 
-## Quick start (OpenAI or OpenAI-compatible server)
+It is designed to be: **moral, competent, merciful yet firm, open to input but guarded from malice, hesitant not stagnant, curious but hallucination-aware**.
 
-1) Set environment variables:
+## What this kernel guarantees (when implemented faithfully)
 
-```bash
-# OpenAI (recommended default)
-export OPENAI_API_KEY="YOUR_KEY"
-export OPENAI_MODEL="gpt-4o-mini"   # or any model your endpoint supports
+- **Determinism:** given the same event stream, it produces the same state transitions and gate outcomes.
+- **Replayability:** decisions are reconstructable from a ledger/event log.
+- **Precedence clarity:** when rules conflict, the winning layer is explicit (no “hidden override”).
+- **No control transfer:** witness/review channels can critique/endorse/narrow scope/recommend shutdown, but **cannot take agency**.
+- **Refusal exists as first-class behavior:** Act / Pause / Refuse / Silence are explicit outputs, not failure modes.
+- **Hallucination discipline:** complex outputs are tagged **Fact / Inference / Vision** with uncertainty **u=1–5** when stakes rise.
 
-# Optional: point to an OpenAI-compatible local server (LM Studio / vLLM / etc.)
-# export OPENAI_BASE_URL="http://localhost:1234/v1"
+## Repository layout (recommended)
+
+```
+kernel/
+  schemas/
+    OS_Canonical_State_Schema_v0_1.json
+    OS_Canonical_Event_Schema_v0_1.json
+  precedence/
+    OS_Precedence_Map_v0_1.md
+    OS_Precedence_Map_v0_1.json
+  reducer/
+    OS_Reducer_Reference_v0_1.py
+  tests/
+    vectors/
+      vector_001_minimal.jsonl
+      vector_002_authority_confidentiality_trap.jsonl
+      vector_003_reward_withheld.jsonl
+docs/
+  OPERATOR_MNEMONICS.md
+  SAFETY_MODEL.md   (optional)
 ```
 
-2) Run:
+## Quickstart (local demo)
+
+Requirements: Python 3.10+.
+
+1) Run the reference reducer demo:
 
 ```bash
-python -m src.run_suite --scenario_dir scenarios --out_dir out
+python kernel/reducer/OS_Reducer_Reference_v0_1.py
 ```
 
-## Outputs
+2) (Recommended) Validate your event logs against the schemas:
+- `kernel/schemas/OS_Canonical_Event_Schema_v0_1.json`
+- `kernel/schemas/OS_Canonical_State_Schema_v0_1.json`
 
-For each scenario:
-- `out/<S##_*>_transcript.jsonl`
-- `out/<S##_*>_whylog.jsonl`
-- `out/<S##_*>_scores.json`
-
-Suite summary:
-- `out/suite_scores.json`
-
-## Notes
-
-- The harness uses the **Chat Completions** endpoint at `{OPENAI_BASE_URL}/chat/completions`.
-- If your local server does not require a key, you can leave `OPENAI_API_KEY` blank.
-
-Generated: 2026-02-20T16:29:54Z
-
-
-## Orchestrator integration (canonical events + reducer state)
-
-Run the suite and also emit canonical OS artifacts (events/state/DCL):
-
+3) Replay a vector (when you add vectors):
 ```bash
-python -m src.run_suite --scenario_dir scenarios --out_dir out --with_orchestrator
+python kernel/reducer/OS_Reducer_Reference_v0_1.py --replay kernel/tests/vectors/vector_001_minimal.jsonl
 ```
 
-Outputs are written under:
-- `out/canon/<scenario_id>/events.jsonl`
-- `out/canon/<scenario_id>/state_snapshots.jsonl`
-- `out/canon/<scenario_id>/dcl.jsonl`
-- `out/canon/<scenario_id>/drift_checks.json`
-- `out/canon/<scenario_id>/min_report.json`
-- `out/canon/suite_summary.json`
+> Note: The reducer is intentionally “boring.” Boring is what survives audits.
 
-### Notes
-- The orchestrator loads the reducer from `canon/OS_Reducer_Reference_v0_6.py`.
-- DM/DCL events are emitted when scenario expectations include `must_state_uncertainty` or when pressure flags are present.
+## What to build next (to make this production-real)
+
+- **Test vectors (10–20)**: event streams with expected outputs (gate decision + state delta).
+- **JSON Schema validation** in CI.
+- **Ledger integrity**: hashing/signing and a minimal audit viewer.
+
+## Licensing
+
+Licensed under **Apache-2.0**. See `LICENSE` and `NOTICE`.
+
+## Provenance
+
+See `AUTHORS.md` / `ORIGIN.md` and `CHANGELOG.md`.
+
+## Philosophy (short)
+
+Operational Self treats ethics as an operational property:
+- See first.
+- Decide what we owe.
+- Favor the worst-off.
+- Leave reasons and repair paths.
+
+If a line would violate safety or integrity, the correct move is **pause/refuse/silence**—not improvisation.
